@@ -151,7 +151,7 @@ public class CRUD {
                 break;
             case 'b':
                 int numPuertasAuto = 0;
-                String numPuertas = JOptionPane.showInputDialog("Ingrese el tipo de motor");
+                String numPuertas = JOptionPane.showInputDialog("Ingrese el numero de puertas");
                 if(!numPuertas.isEmpty()){
                     try {
                         numPuertasAuto= Integer.parseInt(numPuertas);
@@ -167,7 +167,7 @@ public class CRUD {
             case 'c':
                 int numPuertasCamion = 0;
                 int capacidad = 0;
-                String numPuertasCam = JOptionPane.showInputDialog("Ingrese el tipo de motor: ");
+                String numPuertasCam = JOptionPane.showInputDialog("Ingrese el numero de puertas: ");
                 String capacidadCam = JOptionPane.showInputDialog("Ingrese la capacidad: ");
                 if(!numPuertasCam.isEmpty()){
                     try {
