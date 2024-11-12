@@ -34,4 +34,16 @@ public class Moto extends Vehiculo{
         System.out.println("Tipo de motor: " + tipoDeMotor);
         System.out.println("Es Deportiva: " + (deportiva ? "Si" : "No"));
     }
+
+    @Override
+    public String getTipo() {
+        return "Moto";
+    }
+
+    @Override
+    public String toString(){
+        return (
+                super.toString() + "Tipo de motor: " + tipoDeMotor + "\n" + "Es deportiva: " + (deportiva ? "Si" : "No")
+                );
+    }
 }
