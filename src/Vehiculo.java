@@ -49,4 +49,17 @@ public class Vehiculo {
         System.out.println("Año de fabricacion: " + fabricacion);
         System.out.println("Numero Identificacion: " + numeroIdentificacion);
     }
+
+    public String toString() {
+        return (
+                "Tipo: " + getTipo() + "\n" +
+                "Marca: " + marca + "\n" +
+                "Modelo: " + modelo + "\n" + "Año de fabricacion: " + fabricacion + "\n"+
+                        "Numero de Identificacion: " + numeroIdentificacion + "\n"
+        );
+    }
+
+    public String getTipo(){
+        return "Auto";
+    }
 }
