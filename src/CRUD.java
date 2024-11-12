@@ -69,9 +69,38 @@ public class CRUD {
                 int respuesta = JOptionPane.showConfirmDialog(null, "¿Es deportiva?", "Tipo de Vehículo", JOptionPane.YES_NO_OPTION);
                 moto.setDeportiva(respuesta == JOptionPane.YES_OPTION);
             }else if(vehiculo.getTipo().equals("Auto")){
-
+                Auto auto = (Auto) vehiculo;
+                String numPuertas = JOptionPane.showInputDialog("Ingrese el numero de puertas: ");
+                if(!numPuertas.isEmpty()){
+                    try {
+                        int numPuertasAuto = Integer.parseInt(numPuertas);
+                        auto.setNumPuertas(numPuertasAuto);
+                    } catch (NumberFormatException e) {
+                        JOptionPane.showMessageDialog(null, "Por favor, ingrese un número válido para el año.");
+                    }
+                }
+                int respuesta = JOptionPane.showConfirmDialog(null, "¿Es deportiva?", "Tipo de Vehículo", JOptionPane.YES_NO_OPTION);
+                auto.setDeportivo(respuesta == JOptionPane.YES_OPTION);
             }else if(vehiculo.getTipo().equals("Camion")){
-
+                Camion camion = (Camion) vehiculo;
+                String numPuertas = JOptionPane.showInputDialog("Ingrese el numero de puertas: ");
+                String capacidad = JOptionPane.showInputDialog("Ingrese la capacidad: ");
+                if(!numPuertas.isEmpty()){
+                    try {
+                        int numPuertasCamion = Integer.parseInt(numPuertas);
+                        camion.setNumeroDePuertas(numPuertasCamion);
+                    } catch (NumberFormatException e) {
+                        JOptionPane.showMessageDialog(null, "Por favor, ingrese un número válido para el año.");
+                    }
+                }
+                if(!capacidad.isEmpty()){
+                    try{
+                        int capacidadAuto = Integer.parseInt(capacidad);
+                        camion.setCapacidadDeCarga( capacidadAuto);
+                    } catch (NumberFormatException e) {
+                        JOptionPane.showMessageDialog(null, "Por favor, ingrese un número válido para el año.");
+                    }
+                }
             }
 
             panel.actualizarTabla(vehiculos);
@@ -121,8 +150,41 @@ public class CRUD {
                 vehiculos.add(moto);
                 break;
             case 'b':
+                int numPuertasAuto = 0;
+                String numPuertas = JOptionPane.showInputDialog("Ingrese el tipo de motor");
+                if(!numPuertas.isEmpty()){
+                    try {
+                        numPuertasAuto= Integer.parseInt(numPuertas);
+                    } catch (NumberFormatException e) {
+                        JOptionPane.showMessageDialog(null, "Por favor, ingrese un número válido para el año.");
+                    }
+                }
+                int respuestaAuto = JOptionPane.showConfirmDialog(null, "¿Es deportiva?", "Tipo de Vehículo", JOptionPane.YES_NO_OPTION);
+                boolean esDeportivaAuto = (respuestaAuto == JOptionPane.YES_OPTION);
+                Auto auto = new Auto(marca,modelo,anoFabricacionInt,numeroIdentificacion,esDeportivaAuto,numPuertasAuto);
+                vehiculos.add(auto);
                 break;
             case 'c':
+                int numPuertasCamion = 0;
+                int capacidad = 0;
+                String numPuertasCam = JOptionPane.showInputDialog("Ingrese el tipo de motor: ");
+                String capacidadCam = JOptionPane.showInputDialog("Ingrese la capacidad: ");
+                if(!numPuertasCam.isEmpty()){
+                    try {
+                        numPuertasCamion= Integer.parseInt(numPuertasCam);
+                    } catch (NumberFormatException e) {
+                        JOptionPane.showMessageDialog(null, "Por favor, ingrese un número válido para el año.");
+                    }
+                }
+                if(!capacidadCam.isEmpty()){
+                    try {
+                        capacidad= Integer.parseInt(capacidadCam);
+                    }catch (NumberFormatException e) {
+                        JOptionPane.showMessageDialog(null,"por favor, ingrese un numero valido para el año.");
+                    }
+                }
+                Camion camion = new Camion(marca,modelo,anoFabricacionInt,numeroIdentificacion,numPuertasCamion,capacidad);
+                vehiculos.add(camion);
                 break;
         }
         panel.actualizarTabla(vehiculos);
