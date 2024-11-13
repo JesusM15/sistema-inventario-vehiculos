@@ -25,6 +25,11 @@ public class Moto extends Vehiculo{
         return deportiva;
     }
 
+    @Override
+    public String toCSVFormat() {
+        return super.toCSVFormat() + String.format(",%s,%b", tipoDeMotor, deportiva);
+    }
+
     public void setDeportiva(boolean deportiva) {
         this.deportiva = deportiva;
     }

@@ -1,22 +1,51 @@
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.*;
 import java.util.ArrayList;
 
 public class CRUD {
     private ArrayList<Vehiculo> vehiculos;
     private Panel panel;
+    private File file;
 
     public CRUD() {
         this.panel = new Panel();
         this.vehiculos = new ArrayList<>();
 
-        generateVehiculos();
         panel.addCargarButtonListener(e -> cargarVehiculosEnTabla());
         panel.addGetButtonListener(this::cargarInfoVehiculo);
         panel.addDeleteButtonListener(this::deleteVehicle);
         panel.addAddButton(this::addVehicle);
         panel.addUpdateButton(this::updateVehicle);
+    }
+
+    public void setFile(File file) {
+        this.file = file;
+    }
+
+    private void writeNewVehicle(Vehiculo vehiculo) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file.getName(), true))) { // "true" para agregar sin sobrescribir
+            writer.write(vehiculo.toCSVFormat());
+            writer.newLine();
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "Error al guardar el vehículo en el archivo.");
+        }
+    }
+
+    public void saveAllVehicles() {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) { // Sobrescribir archivo completo
+            for (Vehiculo vehiculo : vehiculos) {
+                writer.write(vehiculo.toCSVFormat());
+                writer.newLine();
+            }
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "Error al guardar los vehículos en el archivo.");
+        }
+    }
+
+    public void iniciarCRUD(){
+        panel.activarPanel();
     }
 
     public void updateVehicle(ActionEvent event){
@@ -148,6 +177,7 @@ public class CRUD {
 
                 Moto moto = new Moto(marca, modelo, anoFabricacionInt, numeroIdentificacion, tipoDeMotor, esDeportiva);
                 vehiculos.add(moto);
+                writeNewVehicle(moto);
                 break;
             case 'b':
                 int numPuertasAuto = 0;
@@ -163,6 +193,7 @@ public class CRUD {
                 boolean esDeportivaAuto = (respuestaAuto == JOptionPane.YES_OPTION);
                 Auto auto = new Auto(marca,modelo,anoFabricacionInt,numeroIdentificacion,esDeportivaAuto,numPuertasAuto);
                 vehiculos.add(auto);
+                writeNewVehicle(auto);
                 break;
             case 'c':
                 int numPuertasCamion = 0;
@@ -185,9 +216,57 @@ public class CRUD {
                 }
                 Camion camion = new Camion(marca,modelo,anoFabricacionInt,numeroIdentificacion,numPuertasCamion,capacidad);
                 vehiculos.add(camion);
+                writeNewVehicle(camion);
                 break;
         }
         panel.actualizarTabla(vehiculos);
+    }
+    public void loadVehiclesFromFile() {
+        if (file == null || !file.exists()) {
+            JOptionPane.showMessageDialog(null, "Archivo no configurado o no existe.");
+            return;
+        }
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(file.getName()))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                Vehiculo vehiculo = parseVehicle(line);
+                if (vehiculo != null) {
+                    vehiculos.add(vehiculo);
+                }
+            }
+            panel.actualizarTabla(vehiculos); // Actualizar la tabla con los datos cargados
+            JOptionPane.showMessageDialog(null, "Vehículos cargados desde el archivo.");
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "Error al leer el archivo.");
+        }
+    }
+
+    private Vehiculo parseVehicle(String line) {
+        String[] data = line.split(","); // Suponiendo que usaste "," como delimitador en toString
+
+        String tipo = data[0];
+        String marca = data[1];
+        String modelo = data[2];
+        String numeroIdentificacion = data[3];
+        int fabricacion = Integer.parseInt(data[4]);
+
+        switch (tipo) {
+            case "Moto":
+                String tipoDeMotor = data[5];
+                boolean esDeportiva = Boolean.parseBoolean(data[6]);
+                return new Moto(marca, modelo, fabricacion, numeroIdentificacion, tipoDeMotor, esDeportiva);
+            case "Auto":
+                int numPuertas = Integer.parseInt(data[5]);
+                boolean deportivo = Boolean.parseBoolean(data[6]);
+                return new Auto(marca, modelo, fabricacion, numeroIdentificacion, deportivo, numPuertas);
+            case "Camion":
+                int numeroDePuertas = Integer.parseInt(data[5]);
+                double capacidadDeCarga = Double.parseDouble(data[6]);
+                return new Camion(marca, modelo, fabricacion, numeroIdentificacion, numeroDePuertas, capacidadDeCarga);
+            default:
+                return null; // Si no es un tipo válido, retorna null
+        }
     }
 
     public void deleteVehicle(ActionEvent actionEvent) {
@@ -202,6 +281,7 @@ public class CRUD {
                 break;
             }
         }
+        saveAllVehicles();
         panel.actualizarTabla(vehiculos);
     }
 

@@ -50,6 +50,9 @@ public class Panel extends JFrame {
         updateButton.setBounds(buttonX, 320, 150, 30);
         add(updateButton);
 
+    }
+
+    public void activarPanel(){
         this.setVisible(true);
     }
 
