@@ -11,6 +11,10 @@ public class Auto extends Vehiculo {
         this.numPuertas = numPuertas;
         this.deportivo = false;
     }
+    @Override
+    public String toCSVFormat() {
+        return super.toCSVFormat() + String.format(",%d,%b", numPuertas, deportivo);
+    }
     public int getNumPuertas() {return numPuertas;}
     public void setNumPuertas(int numPuertas) {}
     public boolean isDeportivo(){return deportivo;}

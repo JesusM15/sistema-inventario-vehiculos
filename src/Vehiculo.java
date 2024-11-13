@@ -11,6 +11,10 @@ public class Vehiculo {
         this.numeroIdentificacion = numeroIdentificacion;
     }
 
+    public String toCSVFormat() {
+        return String.format("%s,%s,%s,%s,%d", getTipo(), marca, modelo, numeroIdentificacion, fabricacion);
+    }
+
     public String getMarca() {
         return marca;
     }

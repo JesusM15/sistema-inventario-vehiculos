@@ -6,6 +6,10 @@ public class Camion extends Vehiculo{
         this.numeroDePuertas = numeroDePuertas;
         this.capacidadDeCarga = capacidad;
     }
+    @Override
+    public String toCSVFormat() {
+        return super.toCSVFormat() + String.format(",%d,%.2f", numeroDePuertas, capacidadDeCarga);
+    }
     public int getNumeroDePuertas() {return numeroDePuertas;}
     public double getCapacidadDeCarga() {return capacidadDeCarga;}
     public void setNumeroDePuertas(int numeroDePuertas) {
