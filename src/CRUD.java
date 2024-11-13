@@ -219,6 +219,7 @@ public class CRUD {
                 writeNewVehicle(camion);
                 break;
         }
+        saveAllVehicles();
         panel.actualizarTabla(vehiculos);
     }
     public void loadVehiclesFromFile() {
